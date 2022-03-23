@@ -13,6 +13,14 @@ enum class GAME_STATE {
     RUN,
     STOP
 };
+
+enum class DEBUG_LEVEL{
+    PUBLISH=0,
+    INFO,
+    DEBUG,
+    ERROR
+};
+
 /*
 The standard of my message in std::clog:
 	[#] common info
@@ -37,6 +45,7 @@ public:
     void haltOrContinue();
     void render();
     void log();
+    void log(DEBUG_LEVEL level);
 private:
     GAME_STATE _state;
     int *_bigNet;

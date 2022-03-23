@@ -331,3 +331,26 @@ void GameManager::log() {
     std::clog << "[@]GENERAL_LOG_END[@]" << std::endl;
 }
 
+void GameManager::log(DEBUG_LEVEL level) {
+    std::clog << "[@]GENERAL_LOG[@]" << std::endl;
+    std::clog << "_iLocX: " << _iLocX << " _iLocY: " << _iLocY << std::endl;
+    std::clog << "Tool type: " << _tool.getType() << std::endl;
+    if (level >= DEBUG_LEVEL::DEBUG) {
+        std::clog << "_bigNet" << std::endl;
+        for (int y = 0; y < _netHeight; ++y) {
+            for (int x = 0; x < _netWidth; ++x) {
+                std::clog << _bigNet[y * _netWidth + x];
+            }
+            std::clog << std::endl;
+        }
+        std::clog << "_bigNetAux" << std::endl;
+        for (int y = 0; y < _netHeight; ++y) {
+            for (int x = 0; x < _netWidth; ++x) {
+                std::clog << _bigNetAux[y * _netWidth + x];
+            }
+            std::clog << std::endl;
+        }
+    }
+
+    std::clog << "[@]GENERAL_LOG_END[@]" << std::endl;
+}
