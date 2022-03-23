@@ -63,7 +63,6 @@ void GameManager::run() {
         std::cout << "==============" << std::endl;
         render();
         moveDown();
-        render();
         log();
         fflush(stderr);
         // haltOrContinue();
