@@ -94,8 +94,12 @@ void GameManager::addToolToAux(int *net, int iOffestX, int iOffestY, const Tool 
 //    }
     for (int y = 0; y < 4; ++y) {
         for (int x = 0; x < 4; ++x) {
-            if ((x + iOffestX) >= _netWidth || (y + iOffestY) > _netHeight) {
+            if (((x + iOffestX) >= _netWidth || (y + iOffestY) >= _netHeight) || (x + iOffestX) < 0 ||
+                (y + iOffestY) < 0) {
                 std::clog << "[!]Out of net, ignore." << std::endl;
+                continue;
+            }
+            if (_t.elemAt(x, y) == 0) {
                 continue;
             }
             net[(y + iOffestY) * _netWidth + x + iOffestX] = _t.elemAt(x, y);
@@ -120,11 +124,12 @@ bool GameManager::isDead() {
     std::clog << "[*]Copy _bigNet to _bigNetAux by memcpy." << std::endl;
     memcpy(_bigNetAux, _bigNet, _netHeight * _netWidth * sizeof(int));
     addToolToAux(_bigNetAux, _iLocX, _iLocY, _tool);
-    if (ctr + 4 > countNoneZero(_bigNetAux, _netHeight, _netWidth)) {
+    if (ctr + 4 != countNoneZero(_bigNetAux, _netHeight, _netWidth)) {
         std::clog << "[*]Is dead." << std::endl;
         return true;
     }
     std::clog << "[*]Not dead." << std::endl;
+    log(DEBUG_LEVEL::ERROR);
     return false;
 }
 
@@ -212,6 +217,9 @@ void GameManager::moveDown() {
         std::clog << "[!]Copying Tool to _bigNet..." << std::endl;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
+                if (_tool.elemAt(i, j) == 0) {
+                    continue;
+                }
                 _bigNet[(j + _iLocY) * _netWidth + (i + _iLocX)] = _tool.elemAt(i, j);
             }
         }
