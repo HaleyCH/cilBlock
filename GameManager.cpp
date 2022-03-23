@@ -60,7 +60,8 @@ void GameManager::start() {
 
 void GameManager::run() {
     while (_state == GAME_STATE::RUN) {
-        std::cout<<"=============="<<std::endl;
+        std::cout << "==============" << std::endl;
+        render();
         moveDown();
         render();
         log();
