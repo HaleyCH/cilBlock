@@ -65,6 +65,7 @@ void GameManager::run() {
         moveDown();
         render();
         log();
+        fflush(stderr);
         // haltOrContinue();
     }
 }
@@ -323,6 +324,8 @@ void GameManager::render() {
         std::cout << std::endl;
     }
     std::clog << "[*]Render Finish." << std::endl;
+    fflush(stderr);
+    fflush(stdout);
 }
 
 void GameManager::log() {
