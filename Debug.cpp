@@ -16,7 +16,7 @@ void Debug::init(const char *fp, const char *mode, DEBUG_LEVEL level) {
 }
 
 void Debug::_outputOrIgnore(const char *msg, DEBUG_LEVEL level) {
-    if (level < Debug::debugLevel) {
+    if (level > Debug::debugLevel) {
         return;
     }
     _format();
@@ -77,7 +77,7 @@ void Debug::critical(const char *msg) {
 }
 
 void Debug::_runFunctionOrIgnore(bool (*f)(), DEBUG_LEVEL level) {
-    if (level < Debug::debugLevel) {
+    if (level > Debug::debugLevel) {
         return;
     }
     _format();
