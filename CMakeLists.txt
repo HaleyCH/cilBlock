@@ -3,4 +3,4 @@ project(cilBlock)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cilBlock main.cpp Tool.cpp Tool.h GameManager.cpp GameManager.h)
+add_executable(cilBlock main.cpp Tool.cpp Tool.h GameManager.cpp GameManager.h Debug.cpp Debug.h)

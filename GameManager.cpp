@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include "iostream"
 #include "string"
+#include "Debug.h"
 
 GameManager::GameManager(int width, int height) : _tool(0), _nextTool(0) {
     std::clog << "[+]Constructing GameManager..." << std::endl;

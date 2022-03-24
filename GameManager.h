@@ -8,18 +8,14 @@
 
 #pragma once
 #include"Tool.h"
+#include "Debug.h"
 enum class GAME_STATE {
     HALT=0,
     RUN,
     STOP
 };
 
-enum class DEBUG_LEVEL{
-    PUBLISH=0,
-    INFO,
-    DEBUG,
-    ERROR
-};
+
 
 /*
 The standard of my message in std::clog:
