@@ -21,29 +21,7 @@ void Debug::_outputOrIgnore(const char *msg, DEBUG_LEVEL level) {
         return;
     }
     _format();
-    switch (level) {
-        case DEBUG_LEVEL::INFO:
-            std::clog << "[-]";
-            break;
-        case DEBUG_LEVEL::LOG:
-            std::clog << "[=]";
-            break;
-        case DEBUG_LEVEL::MESSAGE:
-            std::clog << "[*]";
-            break;
-        case DEBUG_LEVEL::DEBUG:
-            std::clog << "[#]";
-            break;
-        case DEBUG_LEVEL::ERROR:
-            std::clog << "[!]";
-            break;
-        case DEBUG_LEVEL::PUBLISH:
-            std::clog << "[?]";
-            break;
-        case DEBUG_LEVEL::CRITICAL:
-            std::clog << "[@]";
-            break;
-    }
+    _setStyle(level);
     std::clog << msg << std::endl;
 }
 
@@ -82,37 +60,17 @@ void Debug::_runFunctionOrIgnore(bool (*f)(), DEBUG_LEVEL level) {
         return;
     }
     _format();
-    switch (level) {
-        case DEBUG_LEVEL::INFO:
-            std::clog << "[-]";
-            break;
-        case DEBUG_LEVEL::LOG:
-            std::clog << "[=]";
-            break;
-        case DEBUG_LEVEL::MESSAGE:
-            std::clog << "[*]";
-            break;
-        case DEBUG_LEVEL::DEBUG:
-            std::clog << "[#]";
-            break;
-        case DEBUG_LEVEL::ERROR:
-            std::clog << "[!]";
-            break;
-        case DEBUG_LEVEL::PUBLISH:
-            std::clog << "[?]";
-            break;
-        case DEBUG_LEVEL::CRITICAL:
-            std::clog << "[@]";
-            break;
-    }
-    dive(1,"Call function.");
+    _setStyle(level);
+    dive("Call function.");
     bool stat = f();
+
     surface();
-    if (stat){
-        surface(1,"Successfully call function.");
+
+    if (stat) {
+        surface("Successfully call function.");
         return;
     }
-    surface(1,"Failed to call function.");
+    surface("Failed to call function.");
 }
 
 void Debug::info(bool (*f)()) {
@@ -139,25 +97,58 @@ void Debug::critical(bool (*f)()) {
     _runFunctionOrIgnore(f, DEBUG_LEVEL::CRITICAL);
 }
 
-void Debug::dive(int i) {
-    dive(i, "Dive in.");
+void Debug::dive() {
+    dive("Dive in.");
 }
 
-
-void Debug::dive(int i, const char *msg) {
+void Debug::dive(const char *msg, DEBUG_LEVEL level) {
+    if (level > Debug::debugLevel) {
+        Debug::depth += 1;
+        return;
+    }
     _format();
-    std::clog<<"[+]"<<msg<<std::endl;
-    Debug::depth += i;
+    std::clog << "[+]" << msg << std::endl;
+    Debug::depth += 1;
 }
 
-void Debug::surface(int i) {
-    surface(i, "Surface out.");
+void Debug::surface() {
+    surface("Surface out.");
 }
 
-void Debug::surface(int i, const char *msg) {
+void Debug::surface(const char *msg, DEBUG_LEVEL level) {
+    if (level > Debug::debugLevel) {
+        Debug::depth -= 1;
+        return;
+    }
     _format();
-    std::clog<<"[-]"<<msg<<std::endl;
-    Debug::depth -= i;
+    std::clog << "[-]" << msg << std::endl;
+    Debug::depth -= 1;
 }
 
+
+void Debug::_setStyle(DEBUG_LEVEL level) {
+    switch (level) {
+        case DEBUG_LEVEL::INFO:
+            std::clog << "[-]";
+            break;
+        case DEBUG_LEVEL::LOG:
+            std::clog << "[=]";
+            break;
+        case DEBUG_LEVEL::MESSAGE:
+            std::clog << "[*]";
+            break;
+        case DEBUG_LEVEL::DEBUG:
+            std::clog << "[#]";
+            break;
+        case DEBUG_LEVEL::ERROR:
+            std::clog << "[!]";
+            break;
+        case DEBUG_LEVEL::PUBLISH:
+            std::clog << "[?]";
+            break;
+        case DEBUG_LEVEL::CRITICAL:
+            std::clog << "[@]";
+            break;
+    }
+}
 
