@@ -19,12 +19,12 @@ enum class DEBUG_LEVEL{
 
 class Debug{
 private:
-    static FILE *_outputStream;
-    static DEBUG_LEVEL debugLevel;
+
     static void _outputOrIgnore(const char *msg, DEBUG_LEVEL level);
     static void _runFunctionOrIgnore(bool (*f)(), DEBUG_LEVEL level);
     static void _format();
 public:
+    static DEBUG_LEVEL debugLevel;
     static int depth;
     Debug()=default;
     ~Debug()=default;
@@ -44,8 +44,10 @@ public:
     static void error(bool (*f)());
     static void critical(bool (*f)());
 
-    static void dive(int i=0);
-    static void surface(int i=0);
+    static void dive(int i=1);
+    static void dive(int i, const char *msg);
+    static void surface(int i=1);
+    static void surface(int i, const char *msg);
 };
 
 

@@ -10,9 +10,10 @@ void Debug::init() {
 }
 
 void Debug::init(const char *fp, const char *mode, DEBUG_LEVEL level) {
+    FILE *_outputStream;
     freopen_s(&_outputStream, fp, mode, stderr);
-    Debug::depth = 0;
-    Debug::debugLevel = level;
+//    Debug::depth = 0;
+//    Debug::debugLevel = level;
 }
 
 void Debug::_outputOrIgnore(const char *msg, DEBUG_LEVEL level) {
@@ -48,7 +49,7 @@ void Debug::_outputOrIgnore(const char *msg, DEBUG_LEVEL level) {
 
 void Debug::_format() {
     for (int i = 0; i < Debug::depth; ++i) {
-        std::clog << " ";
+        std::clog << "   ";
     }
 }
 
@@ -104,7 +105,14 @@ void Debug::_runFunctionOrIgnore(bool (*f)(), DEBUG_LEVEL level) {
             std::clog << "[@]";
             break;
     }
-    f();
+    dive(1,"Call function.");
+    bool stat = f();
+    surface();
+    if (stat){
+        surface(1,"Successfully call function.");
+        return;
+    }
+    surface(1,"Failed to call function.");
 }
 
 void Debug::info(bool (*f)()) {
@@ -132,14 +140,24 @@ void Debug::critical(bool (*f)()) {
 }
 
 void Debug::dive(int i) {
+    dive(i, "Dive in.");
+}
+
+
+void Debug::dive(int i, const char *msg) {
     _format();
-    std::clog<<"[+]Dive in."<<std::endl;
+    std::clog<<"[+]"<<msg<<std::endl;
     Debug::depth += i;
 }
 
 void Debug::surface(int i) {
+    surface(i, "Surface out.");
+}
+
+void Debug::surface(int i, const char *msg) {
     _format();
-    std::clog<<"[-]Surface out."<<std::endl;
+    std::clog<<"[-]"<<msg<<std::endl;
     Debug::depth -= i;
 }
+
 
